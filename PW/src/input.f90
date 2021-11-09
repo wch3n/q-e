@@ -15,7 +15,8 @@ SUBROUTINE iosys()
   !
   USE kinds,         ONLY : DP
   USE funct,         ONLY : get_dft_short
-  USE xc_lib,        ONLY : xclib_set_exx_fraction, set_screening_parameter, &
+  USE xc_lib,        ONLY : xclib_set_exx_fraction, xclib_set_exx_lr_fraction, &
+                            set_screening_parameter, &
                             xclib_dft_is, xclib_set_finite_size_volume, &
                             dft_has_finite_size_correction
   
@@ -248,7 +249,8 @@ SUBROUTINE iosys()
                                starting_ns_eigenvalue, U_projection_type,   &
                                x_gamma_extrapolation, nqx1, nqx2, nqx3,     &
                                exxdiv_treatment, yukawa, ecutvcut,          &
-                               exx_fraction, screening_parameter, ecutfock, &
+                               exx_fraction, exx_lr_fraction,               &
+                               screening_parameter, ecutfock, &
                                gau_parameter, localization_thr, scdm, ace,  &
                                scdmden, scdmgrd, nscdm, n_proj,             & 
                                edir, emaxpos, eopreg, eamp, noncolin, lambda, &
@@ -1642,6 +1644,8 @@ SUBROUTINE iosys()
   ! ... or else the two following parameters will be overwritten
   !
   IF (exx_fraction >= 0.0_DP) CALL xclib_set_exx_fraction (exx_fraction)
+  !
+  IF (exx_lr_fraction <= 0.0_DP) CALL xclib_set_exx_lr_fraction (exx_lr_fraction)
   !
   IF (screening_parameter >= 0.0_DP) &
         & CALL set_screening_parameter(screening_parameter)

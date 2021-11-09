@@ -17,7 +17,7 @@ MODULE qe_drivers_gga
   USE kind_l,              ONLY: DP
   USE dft_setting_params,  ONLY: igcx, igcc, rho_threshold_gga,     &
                                  grho_threshold_gga, exx_started,   &
-                                 exx_fraction, screening_parameter, &
+                                 exx_fraction, exx_lr_fraction, screening_parameter, &
                                  gau_parameter
   !
   IMPLICIT NONE
@@ -310,6 +310,16 @@ SUBROUTINE gcxc( length, rho_in, grho_in, sx_out, sc_out, v1x_out, &
         !
         CALL b86b( rho, grho, 4, sx, v1x, v2x )
         !
+     CASE( 47 ) ! 'CAM'
+        !
+        CALL pbex (rho, grho, 1, sx, v1x, v2x)
+        IF (exx_started) THEN
+           CALL pbexsr (rho, grho, sxsr, v1xsr, v2xsr, screening_parameter)
+           sx  = (1.0_DP-exx_fraction-exx_lr_fraction)*sx  + exx_lr_fraction*sxsr
+           v1x = (1.0_DP-exx_fraction-exx_lr_fraction)*v1x + exx_lr_fraction*v1xsr
+           v2x = (1.0_DP-exx_fraction-exx_lr_fraction)*v2x + exx_lr_fraction*v2xsr
+        ENDIF
+        !
      CASE DEFAULT
         !
         sx  = 0.0_DP
@@ -512,10 +522,11 @@ SUBROUTINE gcx_spin( length, rho_in, grho2_in, sx_tot, v1x_out, v2x_out )
         v2x_up = 2.0_DP * v2x_up
         v2x_dw = 2.0_DP * v2x_dw
         !
-     CASE( 3, 4, 8, 10, 12, 20, 23, 24, 25, 44, 45 )
+     CASE( 3, 4, 8, 10, 12, 20, 23, 24, 25, 44, 45, 47 )
         ! igcx=3:  PBE,  igcx=4:  revised PBE, igcx=8:  PBE0, igcx=10: PBEsol
         ! igcx=12: HSE,  igcx=20: gau-pbe,     igcx=23: obk8, igcx=24: ob86,
         ! igcx=25: ev93, igcx=44: RPBE,        igcx=45: W31X
+        ! igcx=47: CAM
         !
         iflag = 1
         IF ( igcx== 4 ) iflag = 2
@@ -557,6 +568,19 @@ SUBROUTINE gcx_spin( length, rho_in, grho2_in, sx_tot, v1x_out, v2x_out )
            v1x_dw = v1x_dw - exx_fraction * v1xsr_dw
            v2x_up = v2x_up - exx_fraction * v2xsr_up * 2.0_DP
            v2x_dw = v2x_dw - exx_fraction * v2xsr_dw * 2.0_DP
+           !
+        ELSEIF (igcx == 47 .and. exx_started ) THEN
+           !
+           CALL pbexsr( rho_up, grho2_up, sxsr_up, v1xsr_up, &
+                                          v2xsr_up, screening_parameter )
+           CALL pbexsr( rho_dw, grho2_dw, sxsr_dw, v1xsr_dw, &
+                                          v2xsr_dw, screening_parameter )
+           sx_tot(ir) = sx_tot(ir) - (1.0_DP-exx_fraction)*sx_tot(ir) - &
+                     exx_lr_fraction*(sx_tot(ir)-0.5_DP*(sxsr_up*rnull_up + sxsr_dw*rnull_dw ))
+           v1x_up = (1.0_DP - exx_fraction)*v1x_up - exx_lr_fraction*(v1x_up - v1xsr_up)
+           v2x_up = (1.0_DP - exx_fraction)*v2x_up - exx_lr_fraction*(v2x_up - v2xsr_up * 2.0_DP)
+           v1x_dw = (1.0_DP - exx_fraction)*v1x_dw - exx_lr_fraction*(v1x_dw - v1xsr_dw)
+           v2x_dw = (1.0_DP - exx_fraction)*v2x_dw - exx_lr_fraction*(v2x_dw - v2xsr_dw * 2.0_DP)
            !
         ELSEIF ( igcx == 20 .AND. exx_started ) THEN
            ! gau-pbe

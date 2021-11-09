@@ -25,7 +25,7 @@ MODULE qe_dft_list
   !
   SAVE
   !
-  INTEGER, PARAMETER :: nxc=10, ncc=14, ngcx=46, ngcc=14, nmeta=6
+  INTEGER, PARAMETER :: nxc=11, ncc=14, ngcx=47, ngcc=14, nmeta=6
   CHARACTER(LEN=4)   :: dft_LDAx_name(0:nxc),  dft_LDAc_name(0:ncc),  &
                         dft_GGAx_name(0:ngcx), dft_GGAc_name(0:ngcc), &
                         dft_MGGA_name(0:nmeta)
@@ -36,14 +36,14 @@ MODULE qe_dft_list
      INTEGER :: IDs(6)
   END TYPE dft_label
   !
-  INTEGER, PARAMETER :: n_dft=38
+  INTEGER, PARAMETER :: n_dft=39
   TYPE(dft_label) :: dft_full(n_dft)
   !
   !
   !
   ! LDA exchange terms
   DATA dft_LDAx_name / 'NOX', 'SLA', 'SL1', 'RXC', 'OEP', 'HF', 'PB0X', & ! 0 to  6
-                       'B3LP', 'KZK', 'xxxx', 'xxxx' /                    ! 7 "  10
+                       'B3LP', 'KZK', 'xxxx', 'xxxx', 'CAM' /             ! 7 "  11
   ! LDA correlation terms
   DATA dft_LDAc_name / 'NOC', 'PZ', 'VWN', 'LYP', 'PW',   'WIG', 'HL',  & ! 0 to  6
                        'OBZ', 'OBW', 'GL', 'KZK', 'xxxx', 'B3LP','xxxx',& ! 7 "  13
@@ -56,7 +56,7 @@ MODULE qe_dft_list
                        'OB86', 'EVX',  'B86R', 'CX13', 'X3LP', 'CX0',   & !24 "  29
                        'R860', 'CX0P', 'AHCX', 'AHF2', 'AHPB', 'AHPS',  & !30 "  35
                        'CX14', 'CX15', 'BR0',  'CX16', 'C090', 'B86X',  & !36 "  41
-                       'B88X', 'BEEX', 'HHNX', 'W31X', 'W32X' /           !42 "  46 
+                       'B88X', 'BEEX', 'HHNX', 'W31X', 'W32X', 'CAM' /    !42 "  47 
   ! GGA correlation terms
   DATA dft_GGAc_name / 'NOGC', 'P86', 'GGC', 'BLYP', 'PBC', 'HCTH',     & ! 0 to  5
                        'NONE', 'B3LP','PSC', 'PBE' , 'xxxx','xxxx',     & ! 6 "  11
@@ -230,6 +230,9 @@ MODULE qe_dft_list
   DATA dft_full(38)%name2    / 'none'  /
   DATA dft_full(38)%IDs(1:6) / 0,0,0,0,6,0 /
   !
+  DATA dft_full(39)%name     / 'CAM' /
+  DATA dft_full(39)%name2    / 'none'  /
+  DATA dft_full(39)%IDs(1:6) / 11,4,47,4,0,0 /
   !
 CONTAINS
   !

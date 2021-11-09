@@ -31,6 +31,7 @@ MODULE exx
   ! ... general purpose vars
   !
   REAL(DP):: exxalfa=0._DP
+  REAL(DP):: exxbeta=0._DP
   !! the parameter multiplying the exact-exchange part
   REAL(DP), ALLOCATABLE :: x_occupation(:,:)
   !! the weights of auxiliary functions in the density matrix
@@ -346,7 +347,8 @@ MODULE exx
                                      intra_egrp_comm, iexx_start, iexx_end, &
                                      all_start, all_end
     USE mp,                   ONLY : mp_sum, mp_bcast
-    USE xc_lib,               ONLY : xclib_get_exx_fraction, start_exx,          &
+    USE xc_lib,               ONLY : xclib_get_exx_fraction,                & 
+                                     xclib_get_exx_lr_fraction, start_exx,  &
                                      get_screening_parameter, get_gau_parameter, &
                                      exx_is_active
     USE scatter_mod,          ONLY : gather_grid, scatter_grid
@@ -446,6 +448,7 @@ MODULE exx
        gau_scrlen = get_gau_parameter()
        exxdiv  = exx_divergence()
        exxalfa = xclib_get_exx_fraction()
+       exxbeta = xclib_get_exx_lr_fraction()
        !
        CALL start_exx()
     ENDIF

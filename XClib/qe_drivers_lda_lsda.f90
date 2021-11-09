@@ -16,7 +16,7 @@ MODULE qe_drivers_lda_lsda
   !
   USE kind_l,             ONLY: DP
   USE dft_setting_params, ONLY: iexch, icorr, rho_threshold_lda, exx_started, &
-                                exx_fraction, finite_size_cell_volume
+                                exx_fraction, exx_lr_fraction, finite_size_cell_volume
   USE exch_lda
   USE corr_lda
   !
@@ -158,6 +158,14 @@ SUBROUTINE xc_lda( length, rho_in, ex_out, ec_out, vx_out, vc_out )
            ex = (1.0_DP - exx_fraction) * ex
            vx = (1.0_DP - exx_fraction) * vx
         ENDIF
+        !
+     CASE( 11 )                     ! 'CAM'
+        !
+        CALL slater( rs, ex, vx )
+        IF ( exx_started) THEN
+           ex = (1.0_DP - exx_fraction - exx_lr_fraction) * ex
+           vx = (1.0_DP - exx_fraction - exx_lr_fraction) * vx
+        END IF
         !
      CASE DEFAULT
         !
@@ -395,6 +403,15 @@ SUBROUTINE xc_lsda( length, rho_in, zeta_in, ex_out, ec_out, vx_out, vc_out )
            vx_up = (1.0_DP - exx_fraction) * vx_up
            vx_dw = (1.0_DP - exx_fraction) * vx_dw
         ENDIF
+        !
+     CASE( 11 )
+        !                                           ! 'CAM'
+        CALL slater_spin (rho, zeta, ex, vx_up, vx_dw)
+        IF (exx_started) THEN
+           ex   = (1.0_DP - exx_fraction - exx_lr_fraction) * ex
+           vx_up = (1.0_DP - exx_fraction - exx_lr_fraction) * vx_up
+           vx_dw = (1.0_DP - exx_fraction - exx_lr_fraction) * vx_dw
+        END IF
         !
      CASE DEFAULT
         !
