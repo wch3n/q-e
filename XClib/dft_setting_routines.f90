@@ -605,9 +605,9 @@ CONTAINS
        screening_parameter = 0.106_DP
     ENDIF
     ! CAM
-    IF ( igcx == 47) THEN
+    IF ( igcx == 47 .AND. .NOT.is_libxc(3) ) THEN
        exx_fraction = 1.0_DP
-       exx_lr_fraction = -0.5_DP
+       exx_lr_fraction = -0.8_DP
        screening_parameter = 0.7_DP
     END IF
     ! gau-pbe
@@ -779,7 +779,7 @@ CONTAINS
     REAL(DP):: scrparm_
     !! Value to impose as screening parameter
     screening_parameter = scrparm_
-    WRITE(stdout,'(5x,a,f12.7)') 'EXX Screening parameter changed: ', &
+    WRITE(stdout,'(5x,a,f12.7)') 'EXX screening parameter changed: ', &
          & screening_parameter
   END SUBROUTINE set_screening_parameter
   !-----------------------------------------------------------------------

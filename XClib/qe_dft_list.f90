@@ -231,7 +231,7 @@ MODULE qe_dft_list
   DATA dft_full(38)%IDs(1:6) / 0,0,0,0,6,0 /
   !
   DATA dft_full(39)%name     / 'CAM' /
-  DATA dft_full(39)%name2    / 'none'  /
+  DATA dft_full(39)%name2    / 'CAMPBE'  /
   DATA dft_full(39)%IDs(1:6) / 11,4,47,4,0,0 /
   !
 CONTAINS

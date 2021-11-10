@@ -937,7 +937,7 @@ MODULE qes_init_module
   END SUBROUTINE qes_init_dft 
   !
   !
-  SUBROUTINE qes_init_hybrid(obj, tagname, qpoint_grid, ecutfock, exx_fraction, screening_parameter,&
+  SUBROUTINE qes_init_hybrid(obj, tagname, qpoint_grid, ecutfock, exx_fraction, exx_lr_fraction, screening_parameter,&
                             exxdiv_treatment, x_gamma_extrapolation, ecutvcut, localization_threshold &
                             )
     !
@@ -947,7 +947,7 @@ MODULE qes_init_module
     CHARACTER(LEN=*), INTENT(IN) :: tagname
     TYPE(qpoint_grid_type),OPTIONAL,INTENT(IN) :: qpoint_grid
     REAL(DP),OPTIONAL,INTENT(IN) :: ecutfock
-    REAL(DP),OPTIONAL,INTENT(IN) :: exx_fraction
+    REAL(DP),OPTIONAL,INTENT(IN) :: exx_fraction, exx_lr_fraction
     REAL(DP),OPTIONAL,INTENT(IN) :: screening_parameter
     CHARACTER(LEN=*),OPTIONAL,INTENT(IN) :: exxdiv_treatment
     LOGICAL,OPTIONAL,INTENT(IN) :: x_gamma_extrapolation
@@ -975,6 +975,12 @@ MODULE qes_init_module
       obj%exx_fraction = exx_fraction
     ELSE 
       obj%exx_fraction_ispresent = .FALSE.
+    END IF
+    IF ( PRESENT(exx_lr_fraction)) THEN 
+      obj%exx_lr_fraction_ispresent = .TRUE. 
+      obj%exx_lr_fraction = exx_lr_fraction
+    ELSE 
+      obj%exx_lr_fraction_ispresent = .FALSE.
     END IF
     IF ( PRESENT(screening_parameter)) THEN 
       obj%screening_parameter_ispresent = .TRUE. 

@@ -308,7 +308,7 @@ CONTAINS
   !
   !-----------------------------------------------------------------------
   SUBROUTINE qexsd_copy_dft ( dft_obj, nsp, atm, &
-       dft_name, nq1, nq2, nq3, ecutfock, exx_fraction, screening_parameter, &
+       dft_name, nq1, nq2, nq3, ecutfock, exx_fraction, exx_lr_fraction, screening_parameter, &
        exxdiv_treatment, x_gamma_extrapolation, ecutvcut, local_thr, &
        lda_plus_U, lda_plus_U_kind, U_projection, Hubbard_l, Hubbard_lmax, &
        Hubbard_l_back, Hubbard_l1_back, backall, Hubbard_lmax_back, Hubbard_alpha_back, &
@@ -327,7 +327,7 @@ CONTAINS
     ! Variables that may or may not be present should be intent(inout)
     ! so that they do not forget their default value (if any)
     CHARACTER(LEN=*), INTENT(inout) :: exxdiv_treatment
-    REAL(dp), INTENT(inout) :: ecutfock, exx_fraction, screening_parameter, &
+    REAL(dp), INTENT(inout) :: ecutfock, exx_fraction, exx_lr_fraction, screening_parameter, &
          ecutvcut, local_thr
     INTEGER, INTENT(inout) :: nq1, nq2, nq3
     LOGICAL, INTENT(inout) :: x_gamma_extrapolation
@@ -357,6 +357,7 @@ CONTAINS
        nq3 = dft_obj%hybrid%qpoint_grid%nqx3
        ecutfock = dft_obj%hybrid%ecutfock
        exx_fraction = dft_obj%hybrid%exx_fraction
+       exx_lr_fraction = dft_obj%hybrid%exx_lr_fraction
        screening_parameter = dft_obj%hybrid%screening_parameter
        exxdiv_treatment = dft_obj%hybrid%exxdiv_treatment
        x_gamma_extrapolation = dft_obj%hybrid%x_gamma_extrapolation

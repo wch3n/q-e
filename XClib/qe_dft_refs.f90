@@ -46,6 +46,8 @@ MODULE qe_dft_refs
   DATA dft_LDAx_ref(9)  / 'X. Xu, W.A Goddard III, PNAS 101, 2673 (2004)' /
   ! xxxx [KLI]
   DATA dft_LDAx_ref(10) / 'KLI aproximation for exx - currently not implemented' /
+  ! CAM
+  DATA dft_LDAx_ref(11) / 'CAM range-separation' /
   !
   !
   !  ---- LDA correlation ----
@@ -183,6 +185,8 @@ MODULE qe_dft_refs
   DATA dft_GGAx_ref(45) / 'D. Chakraborty, K. Berland, and T. Thonhauser, JCTC 16, 5893 (2020)' /
   ! W32X  vdW-DF3-opt2 exchange
   DATA dft_GGAx_ref(46) / 'D. Chakraborty, K. Berland, and T. Thonhauser, JCTC 16, 5893 (2020)' /
+  ! CAM
+  DATA dft_GGAx_ref(49) / 'Chen, Miceli, Rignanese, and Pasquarello, PRMaterials 2, 073803 (2018)' /
   !
   !
   ! ---- GGA correlation ----
@@ -315,6 +319,8 @@ MODULE qe_dft_refs
   DATA dft_full_descr(37) / 'SCAN Meta-GGA - needs Libxc.' /
   ! SCAN0
   DATA dft_full_descr(38) / 'SCAN Meta-GGA - needs Libxc.' /
-  !
+  ! CAM / CAMPBE
+  DATA dft_full_descr(39) / 'CAM-PBE hybrid' /
+  
 END MODULE qe_dft_refs
 

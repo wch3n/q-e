@@ -16,7 +16,7 @@ SUBROUTINE iosys()
   USE kinds,         ONLY : DP
   USE funct,         ONLY : get_dft_short
   USE xc_lib,        ONLY : xclib_set_exx_fraction, xclib_set_exx_lr_fraction, &
-                            set_screening_parameter, &
+                            set_screening_parameter, xclib_get_ID, &
                             xclib_dft_is, xclib_set_finite_size_volume, &
                             dft_has_finite_size_correction
   
@@ -341,6 +341,8 @@ SUBROUTINE iosys()
   LOGICAL  :: exst, parallelfs, domag, stop_on_error
   REAL(DP) :: at_dum(3,3), theta, phi, ecutwfc_pp, ecutrho_pp, V
   CHARACTER(len=256) :: tempfile
+  !
+  INTEGER :: igcx
   !
   ! MAIN CONTROL VARIABLES, MD AND RELAX
   !
@@ -1643,12 +1645,19 @@ SUBROUTINE iosys()
   ! ... must be done AFTER dft is read from PP files and initialized
   ! ... or else the two following parameters will be overwritten
   !
+  igcx = xclib_get_ID('GGA', 'EXCH')
   IF (exx_fraction >= 0.0_DP) CALL xclib_set_exx_fraction (exx_fraction)
   !
-  IF (exx_lr_fraction <= 0.0_DP) CALL xclib_set_exx_lr_fraction (exx_lr_fraction)
+  IF (exx_lr_fraction < 0.0_DP) CALL xclib_set_exx_lr_fraction (exx_lr_fraction)
   !
   IF (screening_parameter >= 0.0_DP) &
         & CALL set_screening_parameter(screening_parameter)
+  !
+  IF (igcx == 47) THEN
+     WRITE (stdout,'( "     CAM sr fraction:     ",F8.3)') exx_fraction
+     WRITE (stdout,'( "     CAM lr fraction:     ",F8.3)') exx_fraction + exx_lr_fraction
+     WRITE (stdout,'( "     CAM screening param: ",F8.3)') screening_parameter
+  END IF
   !
   ! ... if DFT finite size corrections are needed, define the appropriate volume
   !
