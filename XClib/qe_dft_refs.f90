@@ -239,6 +239,9 @@ MODULE qe_dft_refs
   DATA dft_MGGA_ref(5)  / 'J Sun, A Ruzsinszky and J Perdew, PRL 115, 36402 (2015) - Libxc needed' /
   ! SCA0
   DATA dft_MGGA_ref(6)  / 'K Hui and J-D. Chai, JCP 144, 44114 (2016)' /
+  ! R2SCAN
+  DATA dft_MGGA_ref(7)  / 'J. W. Furness, A. D. Kaplan, J. Ning, J. P. Perdew, &
+                          &and J. Sun, JPCL 11, 8208 (2020) - Libxc needed' /
   !
   !
   ! ---- Full DFTs ----
@@ -318,9 +321,11 @@ MODULE qe_dft_refs
   ! SCAN
   DATA dft_full_descr(37) / 'SCAN Meta-GGA - needs Libxc.' /
   ! SCAN0
-  DATA dft_full_descr(38) / 'SCAN Meta-GGA - needs Libxc.' /
-  ! CAM / CAMPBE
-  DATA dft_full_descr(39) / 'CAM-PBE hybrid' /
-  
+  DATA dft_full_descr(38) / 'SCAN0 Meta-GGA - needs Libxc.' /
+  ! R2SCAN
+  DATA dft_full_descr(39) / 'R2SCAN Meta-GGA - needs Libxc.' /
+  ! CAM 
+  DATA dft_full_descr(40) / 'CAM-PBE hybrid' /
+  !
 END MODULE qe_dft_refs
 
