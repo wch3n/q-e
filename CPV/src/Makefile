@@ -11,7 +11,6 @@ bforceion.o \
 cell_nose.o \
 cg.o \
 cg_sub.o \
-cglib.o \
 chargedensity.o \
 cp_autopilot.o \
 cp_emass.o \
@@ -116,7 +115,7 @@ entropy.o
 
 QEMODS=$(BASEMODS)
 
-TLDEPS= bindir libs mods
+TLDEPS= bindir mods
 
 all : tldeps libcp.a manycp.x cp.x wfdd.x cppp.x
 

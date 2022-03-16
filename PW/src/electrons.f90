@@ -434,7 +434,8 @@ SUBROUTINE electrons_scf ( printout, exxen )
   !
   USE wvfct_gpum,           ONLY : using_et
   USE scf_gpum,             ONLY : using_vrs
-  USE device_fbuff_m,             ONLY : dev_buf, pin_buf
+  USE device_fbuff_m,       ONLY : dev_buf, pin_buf
+  USE pwcom,                ONLY : report_mag 
   !
   IMPLICIT NONE
   !
@@ -904,7 +905,7 @@ SUBROUTINE electrons_scf ( printout, exxen )
      IF ( report > 0 ) THEN
         IF ( conv_elec .OR.  MOD(iter,report) == 0 ) CALL report_mag()
      ELSE IF ( report < 0 ) THEN
-        IF ( conv_elec ) CALL report_mag()
+        IF ( conv_elec ) CALL report_mag(SAVE_LOCALS=.TRUE.)
      END IF
      !
      WRITE( stdout, 9000 ) get_clock( 'PWSCF' )
@@ -1180,7 +1181,7 @@ SUBROUTINE electrons_scf ( printout, exxen )
        !
        ! ... delta_e =  - \int rho%of_r(r)  v%of_r(r)
        !                - \int rho%kin_r(r) v%kin_r(r) [for Meta-GGA]
-       !                - \sum rho%ns       v%ns       [for LDA+U]
+       !                - \sum rho%ns       v%ns       [for DFT+Hubbard]
        !                - \sum becsum       D1_Hxc     [for PAW]
        !
        USE xc_lib,  ONLY : xclib_dft_is
@@ -1265,7 +1266,7 @@ SUBROUTINE electrons_scf ( printout, exxen )
        !
        ! ... delta_escf = - \int \delta rho%of_r(r)  v%of_r(r)
        !                  - \int \delta rho%kin_r(r) v%kin_r(r) [for Meta-GGA]
-       !                  - \sum \delta rho%ns       v%ns       [for LDA+U]
+       !                  - \sum \delta rho%ns       v%ns       [for DFT+Hubbard]
        !                  - \sum \delta becsum       D1         [for PAW] 
        !
        USE xc_lib, ONLY : xclib_dft_is

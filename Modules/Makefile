@@ -3,8 +3,7 @@
 include ../make.inc
 
 # location of needed modules
-MODFLAGS=$(BASEMOD_FLAGS) \
-         $(MOD_FLAG)../ELPA/src
+MODFLAGS=$(BASEMOD_FLAGS)
 
 # list of modules
 
@@ -90,7 +89,6 @@ qes_write_module.o \
 qes_read_module.o \
 qes_reset_module.o \
 qes_init_module.o \
-qes_read_module.o \
 qes_bcast_module.o \
 qexsd.o   \
 qexsd_copy.o   \
@@ -124,8 +122,6 @@ radial_gradients.o \
 rgen.o \
 recips.o \
 remove_tot_torque.o \
-set_hubbard_l.o \
-set_hubbard_n.o \
 sort.o \
 trimcheck.o \
 test_input_file.o \

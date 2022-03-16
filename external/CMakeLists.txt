@@ -14,13 +14,14 @@ include(wannier90.cmake)
 include(mbd.cmake)
 
 ###########################################################
-# Eigensolver_GPU
-###########################################################
-if(QE_ENABLE_CUDA AND NOT QE_ENABLE_LAXLIB_CUSOLVER)
-    include(eigensolver_gpu.cmake)
-endif()
-
-###########################################################
 # DeviceXlib
 ###########################################################
 include(devxlib.cmake)
+
+###########################################################
+# D3Q
+###########################################################
+if("d3q" IN_LIST QE_ENABLE_PLUGINS)
+  qe_git_submodule_update(external/d3q)
+  add_subdirectory(d3q)
+endif()

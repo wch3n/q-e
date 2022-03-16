@@ -86,10 +86,11 @@ MODULE exx_base
   !! erf screening
   !
   REAL(DP) :: gau_scrlen = 0.d0
-  !! CAM screening
+  !! CAM screening and igcx
   !
   REAL(DP) :: exxalfa = 0._dp
   REAL(DP) :: exxbeta = 0._dp
+  INTEGER :: igcx_cam = 51
   !! gau-pbe screening
   !
   ! ... cutoff techniques
@@ -820,8 +821,7 @@ MODULE exx_base
       ELSEIF (qq > eps_qdiv) THEN
          !
          IF ( erfc_scrlen > 0  ) THEN
-            IF ( igcx == 47 ) THEN
-               IF ( exxalfa == 0._DP) exxalfa = 0.0001_DP
+            IF ( igcx == igcx_cam ) THEN
                fac(ig)=e2*fpi/qq*(1._DP+EXP(-qq/4._DP/erfc_scrlen**2)*exxbeta/exxalfa)*grid_factor_track(ig)
             ELSE    
                fac(ig) = e2*fpi/qq*(1._DP-EXP(-qq/4._DP/erfc_scrlen**2)) * grid_factor_track(ig)
@@ -924,8 +924,7 @@ MODULE exx_base
                  IF (.NOT.on_double_grid) THEN
                     IF ( qq > 1.d-8 ) THEN
                        IF ( erfc_scrlen > 0 ) THEN
-                          IF ( igcx == 47 ) THEN
-                             IF ( exxalfa == 0._DP) exxalfa = 0.0001_DP
+                          IF ( igcx == igcx_cam ) THEN
                              div = div + EXP( -alpha * qq) / qq * &
                                 (1._dp+EXP(-qq*tpiba2/4.d0/erfc_scrlen**2) * exxbeta / exxalfa) * &
                                 grid_factor
@@ -978,8 +977,7 @@ MODULE exx_base
         q_ = dq * (iq+0.5d0)
         qq = q_ * q_
         IF ( erfc_scrlen > 0 ) THEN
-             IF (igcx == 47) THEN 
-                IF (exxalfa == 0) exxalfa = 0.0001_DP
+             IF (igcx == igcx_cam) THEN 
                 aa = aa + EXP( -alpha * qq) * EXP(-qq/4.d0/erfc_scrlen**2)*exxbeta/exxalfa*dq
              ELSE
                 aa = aa  -EXP( -alpha * qq) * EXP(-qq/4.d0/erfc_scrlen**2)*dq
