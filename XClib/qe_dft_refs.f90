@@ -186,7 +186,7 @@ MODULE qe_dft_refs
   ! W32X  vdW-DF3-opt2 exchange
   DATA dft_GGAx_ref(46) / 'D. Chakraborty, K. Berland, and T. Thonhauser, JCTC 16, 5893 (2020)' /
   ! CAM
-  DATA dft_GGAx_ref(49) / 'Chen, Miceli, Rignanese, and Pasquarello, PRMaterials 2, 073803 (2018)' /
+  DATA dft_GGAx_ref(47) / 'Chen, Miceli, Rignanese, and Pasquarello, PRMaterials 2, 073803 (2018)' /
   !
   !
   ! ---- GGA correlation ----
