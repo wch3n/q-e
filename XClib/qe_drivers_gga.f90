@@ -17,7 +17,7 @@ MODULE qe_drivers_gga
   USE kind_l,               ONLY: DP
   USE dft_setting_params,   ONLY: igcx, igcc, rho_threshold_gga,     &
                                   grho_threshold_gga, exx_started,   &
-                                  exx_fraction, exx_lf_fraction,     &
+                                  exx_fraction, exx_lr_fraction,     &
                                   screening_parameter, &
                                   gau_parameter
   !
@@ -370,7 +370,7 @@ SUBROUTINE gcxc( length, rho_in, grho_in, sx_out, sc_out, v1x_out, &
         !
         CALL pbex (rho, grho, 1, sx, v1x, v2x)
         IF (exx_started) THEN
-           CALL pbexsr (rho, grho, sxsr, v1xsr, v2xsr, screening_parameter)
+           CALL pbexsr (rho, grho, sxsr, v1xsr, v2xsr, screening_parameter, in_err)
            sx  = (1.0_DP-exx_fraction-exx_lr_fraction)*sx  + exx_lr_fraction*sxsr
            v1x = (1.0_DP-exx_fraction-exx_lr_fraction)*v1x + exx_lr_fraction*v1xsr
            v2x = (1.0_DP-exx_fraction-exx_lr_fraction)*v2x + exx_lr_fraction*v2xsr
@@ -647,9 +647,9 @@ SUBROUTINE gcx_spin( length, rho_in, grho2_in, sx_tot, v1x_out, v2x_out, err_out
         ELSEIF (igcx == 51 .and. exx_started ) THEN
            !
            CALL pbexsr( rho_up, grho2_up, sxsr_up, v1xsr_up, &
-                                          v2xsr_up, screening_parameter )
+                                          v2xsr_up, screening_parameter, in_err )
            CALL pbexsr( rho_dw, grho2_dw, sxsr_dw, v1xsr_dw, &
-                                          v2xsr_dw, screening_parameter )
+                                          v2xsr_dw, screening_parameter, in_err )
            sx_tot(ir) = sx_tot(ir) - (1.0_DP-exx_fraction)*sx_tot(ir) - &
                      exx_lr_fraction*(sx_tot(ir)-0.5_DP*(sxsr_up*rnull_up + sxsr_dw*rnull_dw ))
            v1x_up = (1.0_DP - exx_fraction)*v1x_up - exx_lr_fraction*(v1x_up - v1xsr_up)

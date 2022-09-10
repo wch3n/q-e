@@ -421,7 +421,7 @@ MODULE pw_restart_new
             CALL qexsd_init_hybrid(hybrid_obj_opt, DFT_IS_HYBRID = .TRUE., NQ1 = nq1 , NQ2 = nq2, NQ3 =nq3, &
                                    ECUTFOCK = ecutfock/e2, &
                                    EXX_FRACTION = xclib_get_exx_fraction(), EXX_LR_FRACTION = xclib_get_exx_lr_fraction(), &
-                                   SCREENING_PARAMETER = scr_par_opt, &
+                                   SCREENING_PARAMETER = scr_par_pt, &
                                    EXXDIV_TREATMENT = exxdiv_treatment, X_GAMMA_EXTRAPOLATION = x_gamma_extrapolation,&
                                    ECUTVCUT = ecutvcut_pt, LOCAL_THR = loc_thr_pt )
          ELSE 
